@@ -5,27 +5,22 @@ pragma circom 2.0.0;
 template Multiplier2 () {  
 
   // signal inputs
-
    signal input a;
    signal input b;
 
-// signals from gates
-
+  // signals from gates
    signal x;
    signal y;
 
-// final signal output
-
+  // final signal output
    signal output q;
 
-// component gates used to create custom circuit
-
+  // component gates used to create custom circuit
    component andGate = AND();
    component notgate = NOT();
-   component norGate = NOR();
+   component orGate = OR(); // Change NOR to OR here
 
-// circuit logic
-
+  // circuit logic
    andGate.a <== a;
    andGate.b <== b;
    x <== andGate.out;
@@ -33,9 +28,9 @@ template Multiplier2 () {
    notgate.in <== b;
    y <== notgate.out;
 
-   norGate.x <== x;
-   norGate.y <== y;
-   q <== norGate.out;
+   orGate.a <== x; // Change NOR to OR here
+   orGate.b <== y; // Change NOR to OR here
+   q <== orGate.out;
 
 }
 // template for AND
@@ -53,13 +48,13 @@ template NOT() {
 
     out <== 1 + in - 2*in;
 }
-// template for NOR
-template NOR() {
+// template for OR
+template OR() {
     signal input x;
     signal input y;
     signal output out;
 
-    out <== x*y + 1 - x - y;
+    out <== x + y; // Corrected the OR gate logic
 
 }
 component main = Multiplier2();
